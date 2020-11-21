@@ -16,6 +16,8 @@
   "dependencies": {
     "axios": "^0.21.0",
     "element-ui": "^2.14.1",
+    "less": "^3.9",
+    "less-loader": "^5.0.0",
     "moment": "^2.29.1",
     "qs": "^6.9.4",
     "vue": "^2.5.2",

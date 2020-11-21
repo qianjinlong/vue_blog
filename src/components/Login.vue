@@ -2,7 +2,7 @@
   <div style="max-height: 100%;">
     <div class="login">
       <div class="title">
-          <span>管理员登陆</span>
+        <span>管理员登陆</span>
       </div>
       <div>
         <el-input
@@ -78,27 +78,27 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 .login {
   margin: 0 auto;
   margin-top: 200px;
   width: 220px;
-}
-.title {
-  font-size: 14px;
-  border-radius: 5px 5px 0 0;
-  height: 30px;
-  background-color: #409EFF;
-  margin-bottom: 10px;
-  color: #FFF;
-  text-align: center;
-  line-height: 30px;
-}
-.input_style {
-  width: 220px;
-  margin-bottom: 10px;
-}
-.login_style {
-  width: 220px;
+  .title {
+    font-size: 14px;
+    border-radius: 5px 5px 0 0;
+    height: 30px;
+    background-color: #409eff;
+    margin-bottom: 10px;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+  }
+  .input_style {
+    width: 220px;
+    margin-bottom: 10px;
+  }
+  .login_style {
+    width: 220px;
+  }
 }
 </style>

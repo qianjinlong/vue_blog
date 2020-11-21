@@ -122,7 +122,7 @@ export default {
 }
 
 </script>
-<style scoped>
+<style lang="less" scoped>
 .logout {
   position: fixed;
   right: 20px;

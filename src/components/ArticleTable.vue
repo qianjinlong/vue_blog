@@ -23,6 +23,11 @@
       label="博文分类"
       width="120"
     >
+      <template slot-scope="scope">
+        <span v-for="(item, index) in classify" :key="index">
+          {{scope.row.classify == item.id ? item.name : ''}}
+        </span>
+      </template>
     </el-table-column>
     <el-table-column
       prop="gmtCreate"
@@ -114,7 +119,8 @@ export default {
     return {
       code: '',
       msg: '',
-      tableData: [{}]
+      tableData: [{}],
+      classify: [{}]
     }
   },
   methods: {
@@ -136,11 +142,17 @@ export default {
     https.fetchGet('/article', null).then((res) => {
       this.tableData = res.data.data
       console.log('this.tableData', this.tableData)
+      https.fetchGet('/classify', null).then((res) => {
+        this.classify = res.data.data
+        console.log('this.classify', this.classify)
+      }).catch(err => {
+        console.log(err)
+      })
     }).catch(err => {
       console.log(err)
     })
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
 </style>
