@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // 此处的写法，目的是为了 将 /api 替换成 https://www.baidu.com/
-        target: 'http://122.51.11.189:8081', //注意这里的端口设置根据实际项目开发的情况而定，这是我现在未被占用的端口号；
+        target: 'http://localhost:8081', //注意这里的端口设置根据实际项目开发的情况而定，这是我现在未被占用的端口号；
         changeOrigin: true, // 是否跨域
         ws: true,
         pathRewrite: {

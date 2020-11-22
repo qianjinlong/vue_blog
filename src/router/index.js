@@ -4,12 +4,13 @@ import Router from 'vue-router'
 // 导入上面定义的组件
 import Main from '@/components/Main'
 import Login from '@/components/Login'
-import UserTable from '@/components/UserTable'
+import UserInformation from '@/components/UserInformation'
 import ArticleTable from '@/components/ArticleTable'
 import ArticleTableSelect from '@/components/ArticleTableSelect'
 import ArticleAdd from '@/components/ArticleAdd'
 import ClassifyTable from '@/components/ClassifyTable'
 import ClassifyAdd from '@/components/ClassifyAdd'
+import CommentTable from '@/components/CommentTable'
 
 // 安装路由
 Vue.use(Router)
@@ -74,11 +75,19 @@ export default new Router({
         },
         {
           // 路由路径
+          path: '/main/comment',
+          // 路由名称
+          name: 'CommentTable',
+          // 跳转到组件
+          component: CommentTable
+        },
+        {
+          // 路由路径
           path: '/main/user',
           // 路由名称
-          name: 'UserTable',
+          name: 'UserInformation',
           // 跳转到组件
-          component: UserTable
+          component: UserInformation
         }
       ]
     },

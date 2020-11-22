@@ -25,9 +25,7 @@
               <el-menu-item index="2-4-1">选项1</el-menu-item>
             </el-submenu>
           </el-submenu>
-          <el-menu-item
-            index="3"
-          >消息中心</el-menu-item>
+          <el-menu-item index="3">消息中心</el-menu-item>
           <el-menu-item class="logout">
             <el-button>退了</el-button>
           </el-menu-item>
@@ -70,7 +68,7 @@
             <!-- 文章分类管理 -->
             <el-submenu index="2">
               <template slot="title">
-                <i class="el-icon-tickets"></i>
+                <i class="el-icon-s-cooperation"></i>
                 <span>分类管理</span>
               </template>
               <el-menu-item-group>
@@ -84,19 +82,23 @@
                 >添加分类</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item
-              index="3"
-              disabled
-            >
-              <i class="el-icon-document"></i>
-              <span slot="title">导航三</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-              <i class="el-icon-setting"></i>
-              <span slot="title">导航四</span>
-            </el-menu-item>
+            <el-submenu index="3">
+              <template slot="title">
+                <i class="el-icon-bell"></i>
+                <span>评论管理</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item
+                  index="3-1"
+                  @click="allComment"
+                >所有评论</el-menu-item>
+                <!--  <el-menu-item
+                  index="3-2"
+                  @click="addClassify"
+                >添加分类</el-menu-item> -->
+              </el-menu-item-group>
+            </el-submenu>
           </el-menu>
-
           <!--  -->
         </el-aside>
         <el-main style="min-width: 600px;">
@@ -142,6 +144,9 @@ export default {
     },
     addClassify: function () {
       this.$router.push({ path: '/main/classify/add' })
+    },
+    allComment: function () {
+      this.$router.push({ path: '/main/comment' })
     }
   }
 }
