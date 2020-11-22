@@ -13,6 +13,9 @@ axios.interceptors.request.use((config) => {
   if (config.method === 'post') {
     config.data = qs.stringify(config.data)
   }
+  if (config.method === 'put') {
+    config.data = qs.stringify(config.data)
+  }
   return config
 }, (error) => {
   console.log('错误的传参')
@@ -61,7 +64,39 @@ export function fetchGet (url, param) {
   })
 }
 
+// 返回一个Promise(发送post请求)
+export function fetchPut (url, params) {
+  return new Promise((resolve, reject) => {
+    axios.put(url, params)
+      .then(response => {
+        resolve(response)
+      }, err => {
+        reject(err)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+
+// 返回一个Promise(发送delete请求)
+export function fetchDelete (url, param) {
+  return new Promise((resolve, reject) => {
+    axios.delete(url, { params: param })
+      .then(response => {
+        resolve(response)
+      }, err => {
+        reject(err)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+
 export default {
   fetchPost,
-  fetchGet
+  fetchGet,
+  fetchPut,
+  fetchDelete
 }

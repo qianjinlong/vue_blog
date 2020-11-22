@@ -52,6 +52,7 @@
             text-color="#fff"
             active-text-color="#ffd04b"
           >
+            <!-- 文章管理 -->
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-tickets"></i>
@@ -62,18 +63,39 @@
                   index="1-1"
                   @click="allArticle"
                 >所有文章</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-                <el-menu-item index="1-3">选项3</el-menu-item>
               </el-menu-item-group>
-              <el-submenu index="1-4">
+              <el-menu-item-group>
+                <el-menu-item
+                  index="1-2"
+                  @click="selectArticle"
+                >查询文章</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item
+                  index="1-3"
+                  @click="addArticle"
+                >添加文章</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+            <!-- 文章分类管理 -->
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-tickets"></i>
+                <span>分类管理</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item
+                  index="2-1"
+                  @click="allClassify"
+                >所有分类</el-menu-item>
+                <el-menu-item index="2-2">选项2</el-menu-item>
+                <el-menu-item index="2-3">选项3</el-menu-item>
+              </el-menu-item-group>
+              <el-submenu index="2-4">
                 <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
+                <el-menu-item index="2-4-1">选项1</el-menu-item>
               </el-submenu>
             </el-submenu>
-            <el-menu-item index="2">
-              <i class="el-icon-menu"></i>
-              <span slot="title">导航二</span>
-            </el-menu-item>
             <el-menu-item
               index="3"
               disabled
@@ -90,19 +112,22 @@
           <!--  -->
         </el-aside>
         <el-main style="min-width: 600px;">
-          <router-view></router-view>
+          <router-view v-if="isRouterShow"></router-view>
         </el-main>
       </el-container>
     </el-container>
   </div>
+
 </template>
 
 <script>
+
 export default {
   name: 'Main',
   data () {
     return {
-      msg: 'Welcome to Main'
+      msg: 'Welcome to Main',
+      isRouterShow: true
     }
   },
   methods: {
@@ -117,6 +142,15 @@ export default {
     },
     allArticle: function () {
       this.$router.push({ path: '/main/article' })
+    },
+    selectArticle: function () {
+      this.$router.push({ path: '/main/article/select' })
+    },
+    addArticle: function () {
+      this.$router.push({ path: '/main/article/add' })
+    },
+    allClassify: function () {
+      this.$router.push({ path: '/main/classify' })
     }
   }
 }
@@ -134,7 +168,6 @@ export default {
 .el-main {
   background-color: #e9eef3;
   color: #333;
-  text-align: center;
-  line-height: 160px;
+  //  text-align: center;
 }
 </style>

@@ -6,6 +6,9 @@ import Main from '@/components/Main'
 import Login from '@/components/Login'
 import UserTable from '@/components/UserTable'
 import ArticleTable from '@/components/ArticleTable'
+import ArticleAdd from '@/components/ArticleAdd'
+import ClassifyTable from '@/components/ClassifyTable'
+import ArticleTableSelect from '@/components/ArticleTableSelect'
 
 // 安装路由
 Vue.use(Router)
@@ -13,8 +16,8 @@ Vue.use(Router)
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = Router.prototype.push
 
-Router.prototype.push = function push (location) {
-  return originalPush.call(this, location).catch(err => err)
+Router.prototype.push = function push (to) {
+  return originalPush.call(this, to).catch(err => err)
 }
 
 // 配置路由
@@ -35,6 +38,30 @@ export default new Router({
           name: 'ArticleTable',
           // 跳转到组件
           component: ArticleTable
+        },
+        {
+          // 路由路径
+          path: '/main/article/add',
+          // 路由名称
+          name: 'ArticleAdd',
+          // 跳转到组件
+          component: ArticleAdd
+        },
+        {
+          // 路由路径
+          path: '/main/article/select',
+          // 路由名称
+          name: 'ArticleTableSelect',
+          // 跳转到组件
+          component: ArticleTableSelect
+        },
+        {
+          // 路由路径
+          path: '/main/classify',
+          // 路由名称
+          name: 'ClassifyTable',
+          // 跳转到组件
+          component: ClassifyTable
         },
         {
           // 路由路径

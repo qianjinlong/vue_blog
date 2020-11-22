@@ -1,21 +1,11 @@
 <template>
   <div>
-    <!-- 编辑文章 -->
+    <!-- 按文章标题查询 -->
     <el-dialog
-      title="编辑文章"
-      :visible.sync="articleEditVisible"
+      title="按文章标题查询"
+      :visible.sync="articleByTitleVisible"
     >
       <el-form :model="articleForm">
-        <el-form-item
-          label="博文 ID"
-          :label-width="formLabelWidth"
-        >
-          <el-input
-            :disabled="true"
-            v-model="articleForm.id"
-            autocomplete="off"
-          ></el-input>
-        </el-form-item>
         <el-form-item
           label="博文标题"
           :label-width="formLabelWidth"
@@ -25,6 +15,25 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="articleByTitleVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="getArticleByTitle"
+          icon="el-icon-search"
+        >查询</el-button>
+      </div>
+    </el-dialog>
+    <!-- 按文章分类查询 -->
+    <el-dialog
+      title="按文章分类查询"
+      :visible.sync="articleByClassifyVisible"
+    >
+      <el-form :model="articleForm">
         <el-form-item
           label="博文分类"
           :label-width="formLabelWidth"
@@ -45,18 +54,25 @@
             </span>
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="博文内容"
-          :label-width="formLabelWidth"
-        >
-          <el-input
-            type="textarea"
-            autosize
-            placeholder="请输入内容"
-            v-model="articleForm.content"
-          >
-          </el-input>
-        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="articleByClassifyVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="getArticleByClassify"
+          icon="el-icon-search"
+        >查询</el-button>
+      </div>
+    </el-dialog>
+    <!-- 按状态查询 -->
+    <el-dialog
+      title="按文章状态查询"
+      :visible.sync="articleByDeletedVisible"
+    >
+      <el-form :model="articleForm">
         <el-form-item
           label="博文状态"
           :label-width="formLabelWidth"
@@ -78,41 +94,100 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <el-dialog
-        width="30%"
-        title="警告"
-        :visible.sync="makeSureVisible"
-        append-to-body
-        center
-      >
-        <span>该记录将被永久修改且不可逆，是否继续?</span>
-        <div
-          slot="footer"
-          class="dialog-footer"
-        >
-          <el-button @click="makeSureVisible = false">取 消</el-button>
-          <el-button
-            type="primary"
-            @click="articleEdit"
-          ><i class="el-icon-edit"></i> 确认修改</el-button>
-        </div>
-      </el-dialog>
       <div
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="articleEditVisible = false">取 消</el-button>
+        <el-button @click="articleByDeletedVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="makeSureVisible = true"
-        ><i class="el-icon-edit"></i> 修改</el-button>
+          @click="getArticleByDeleted"
+          icon="el-icon-search"
+        >查询</el-button>
       </div>
     </el-dialog>
+    <el-dialog
+      title="按文章状态及分类查询"
+      :visible.sync="articleByDeletedAndClassifyVisible"
+    >
+      <el-form :model="articleForm">
+        <el-form-item
+          label="博文状态"
+          :label-width="formLabelWidth"
+        >
+          <el-select
+            v-model="articleForm.deleted"
+            placeholder="请选择状态"
+          >
+            <span
+              v-for="(item, index) in deleted"
+              :key="index"
+            >
+              <el-option
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </span>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          label="博文分类"
+          :label-width="formLabelWidth"
+        >
+          <el-select
+            v-model="articleForm.classify"
+            placeholder="请选择分类"
+          >
+            <span
+              v-for="(item, index) in classify"
+              :key="index"
+            >
+              <el-option
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </span>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="articleByDeletedAndClassifyVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="getArticleByDeletedAndClassify"
+          icon="el-icon-search"
+        >查询</el-button>
+      </div>
+    </el-dialog>
+    <!-- 查询按钮 -->
+    <el-row class="select_button">
+      <el-button
+        type="primary"
+        @click="articleByTitleVisible = true"
+      >按标题查询</el-button>
+      <el-button
+        type="primary"
+        @click="articleByClassifyVisible = true"
+      >按分类查询</el-button>
+      <el-button
+        type="primary"
+        @click="articleByDeletedVisible = true"
+      >按状态查询</el-button>
+      <el-button
+        type="primary"
+        @click="articleByDeletedAndClassifyVisible = true"
+      >按状态及分类查询</el-button>
+    </el-row>
     <el-table
       :data="tableData"
       border
-      style="height: 100%"
       v-loading="loading"
+      style="height: 100%"
     >
       <el-table-column
         fixed
@@ -210,7 +285,6 @@
           <el-button
             type="text"
             size="small"
-            @click="articleEditShow(scope.$index)"
           >编辑</el-button>
           <el-button
             type="text"
@@ -229,7 +303,7 @@ import https from '../http.js' // 注意用自己的 http.js 文件路径
 import moment from 'moment' // 日期格式化
 
 export default {
-  name: 'ArticleTable',
+  name: 'ArticleTableSelect',
   data () {
     return {
       code: '',
@@ -246,44 +320,62 @@ export default {
           name: '已回收'
         }
       ],
-      loading: true,
-      articleEditVisible: false,
-      makeSureVisible: false,
+      loading: false,
+      articleByTitleVisible: false,
+      articleByClassifyVisible: false,
+      articleByDeletedVisible: false,
+      articleByDeletedAndClassifyVisible: false,
       articleForm: {
-        id: '',
         title: '',
         classify: '',
-        content: '',
         deleted: ''
       },
       formLabelWidth: '120px'
     }
   },
   methods: {
-    articleEditShow: function (index) {
-      this.articleForm = this.tableData[index]
-      this.articleForm.deleted = this.tableData[index].deleted === true ? 1 : 0
-      console.log(index)
-      this.articleEditVisible = true
-    },
-    articleEdit: function () {
-      let params = this.articleForm
-      https.fetchPut('/article', params).then((res) => {
-        console.log(res.data.data)
-        if (res.data.data === true) {
-          this.$message({
-            type: 'success',
-            message: '修改成功！'
-          })
-        } else {
-          this.$message({
-            type: 'info',
-            message: '修改失败！'
-          })
-        }
+    getArticleByTitle: function () {
+      this.loading = true
+      console.log(this.articleForm.title)
+      let params = { 'title': this.articleForm.title }
+      https.fetchGet('/article/{title}', params).then((res) => {
+        this.tableData = res.data.data
+        console.log('this.tableData', this.tableData)
+        this.articleByTitleVisible = false
       })
-      this.makeSureVisible = false
-      this.articleEditVisible = false
+      this.loading = false
+    },
+    getArticleByClassify: function () {
+      this.loading = true
+      console.log(this.articleForm.id)
+      let params = { 'classify': this.articleForm.classify }
+      https.fetchGet('/article/{classify}', params).then((res) => {
+        this.tableData = res.data.data
+        console.log('this.tableData', this.tableData)
+        this.articleByClassifyVisible = false
+      })
+      this.loading = false
+    },
+    getArticleByDeleted: function () {
+      this.loading = true
+      console.log(this.articleForm.deleted)
+      let params = { 'deleted': this.articleForm.deleted }
+      https.fetchGet('/article/{deleted}', params).then((res) => {
+        this.tableData = res.data.data
+        console.log('this.tableData', this.tableData)
+        this.articleByDeletedVisible = false
+      })
+      this.loading = false
+    },
+    getArticleByDeletedAndClassify: function () {
+      this.loading = true
+      console.log(this.articleForm.deleted)
+      let params = { 'deleted': this.articleForm.deleted, 'classify': this.articleForm.classify }
+      https.fetchGet('/article/{deleted}/{classify}', params).then((res) => {
+        this.tableData = res.data.data
+        console.log('this.tableData', this.tableData)
+        this.articleByDeletedAndClassifyVisible = false
+      })
       this.loading = false
     },
     handleClick: function (row) {
@@ -332,17 +424,15 @@ export default {
     }
   },
   mounted: function () {
-    https.fetchGet('/article', null).then((res) => {
-      this.tableData = res.data.data
-      console.log('this.tableData', this.tableData)
-      https.fetchGet('/classify', null).then((res) => {
-        this.classify = res.data.data
-        console.log('this.classify', this.classify)
-      })
-      this.loading = false
+    https.fetchGet('/classify', null).then((res) => {
+      this.classify = res.data.data
+      console.log('this.classify', this.classify)
     })
   }
 }
 </script>
 <style lang="less" scoped>
+.select_button {
+  margin-bottom: 20px;
+}
 </style>
