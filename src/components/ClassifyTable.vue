@@ -1,5 +1,90 @@
 <template>
   <div>
+    <!-- 编辑分类 -->
+    <el-dialog
+      title="编辑分类"
+      :visible.sync="classifyEditVisible"
+    >
+      <el-form :model="classifyForm">
+        <el-form-item
+          label="分类 ID"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            :disabled="true"
+            v-model="classifyForm.id"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="分类名称"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="classifyForm.name"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="分类描述"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="classifyForm.descr"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="分类状态"
+          :label-width="formLabelWidth"
+        >
+          <el-select
+            v-model="classifyForm.deleted"
+            placeholder="请选择状态"
+          >
+            <span
+              v-for="(item, index) in deleted"
+              :key="index"
+            >
+              <el-option
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </span>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <el-dialog
+        width="30%"
+        title="警告"
+        :visible.sync="makeSureVisible"
+        append-to-body
+        center
+      >
+        <span>该记录将被永久修改且不可逆，是否继续?</span>
+        <div
+          slot="footer"
+          class="dialog-footer"
+        >
+          <el-button @click="makeSureVisible = false">取 消</el-button>
+          <el-button
+            type="primary"
+            @click="classifyEdit"
+          ><i class="el-icon-edit"></i> 确认修改</el-button>
+        </div>
+      </el-dialog>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="classifyEditVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="makeSureVisible = true"
+        ><i class="el-icon-edit"></i> 修改</el-button>
+      </div>
+    </el-dialog>
     <el-table
       :data="tableData"
       border
@@ -66,6 +151,7 @@
           <el-button
             type="text"
             size="small"
+            @click="classifyEditShow((scope.$index))"
           >编辑</el-button>
           <el-button
             type="text"
@@ -90,10 +176,55 @@ export default {
       code: '',
       msg: '',
       tableData: [{}],
-      loading: true
+      loading: true,
+      deleted: [
+        {
+          id: 0,
+          name: '可回收'
+        },
+        {
+          id: 1,
+          name: '已回收'
+        }
+      ],
+      classifyEditVisible: false,
+      makeSureVisible: false,
+      classifyForm: {
+        id: '',
+        name: '',
+        descr: '',
+        deleted: ''
+      },
+      formLabelWidth: '120px'
     }
   },
   methods: {
+    classifyEditShow: function (index) {
+      this.classifyForm = this.tableData[index]
+      this.classifyForm.deleted = this.tableData[index].deleted === true ? 1 : 0
+      console.log(index)
+      this.classifyEditVisible = true
+    },
+    classifyEdit: function () {
+      let params = this.classifyForm
+      https.fetchPut('/classify', params).then((res) => {
+        console.log(res.data.data)
+        if (res.data.data === true) {
+          this.$message({
+            type: 'success',
+            message: '修改成功！'
+          })
+        } else {
+          this.$message({
+            type: 'info',
+            message: '修改失败！'
+          })
+        }
+      })
+      this.makeSureVisible = false
+      this.classifyEditVisible = false
+      this.loading = false
+    },
     handleClick: function (row) {
       console.log(row)
     },

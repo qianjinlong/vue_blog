@@ -6,9 +6,10 @@ import Main from '@/components/Main'
 import Login from '@/components/Login'
 import UserTable from '@/components/UserTable'
 import ArticleTable from '@/components/ArticleTable'
+import ArticleTableSelect from '@/components/ArticleTableSelect'
 import ArticleAdd from '@/components/ArticleAdd'
 import ClassifyTable from '@/components/ClassifyTable'
-import ArticleTableSelect from '@/components/ArticleTableSelect'
+import ClassifyAdd from '@/components/ClassifyAdd'
 
 // 安装路由
 Vue.use(Router)
@@ -62,6 +63,14 @@ export default new Router({
           name: 'ClassifyTable',
           // 跳转到组件
           component: ClassifyTable
+        },
+        {
+          // 路由路径
+          path: '/main/classify/add',
+          // 路由名称
+          name: 'ClassifyAdd',
+          // 跳转到组件
+          component: ClassifyAdd
         },
         {
           // 路由路径

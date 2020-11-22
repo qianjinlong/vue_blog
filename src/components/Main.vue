@@ -27,13 +27,7 @@
           </el-submenu>
           <el-menu-item
             index="3"
-            disabled
           >消息中心</el-menu-item>
-          <el-menu-item index="4"><a
-              href="https://www.ele.me"
-              target="_blank"
-            >订单管理</a>
-          </el-menu-item>
           <el-menu-item class="logout">
             <el-button>退了</el-button>
           </el-menu-item>
@@ -63,14 +57,10 @@
                   index="1-1"
                   @click="allArticle"
                 >所有文章</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group>
                 <el-menu-item
                   index="1-2"
                   @click="selectArticle"
                 >查询文章</el-menu-item>
-              </el-menu-item-group>
-              <el-menu-item-group>
                 <el-menu-item
                   index="1-3"
                   @click="addArticle"
@@ -88,13 +78,11 @@
                   index="2-1"
                   @click="allClassify"
                 >所有分类</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
+                <el-menu-item
+                  index="2-2"
+                  @click="addClassify"
+                >添加分类</el-menu-item>
               </el-menu-item-group>
-              <el-submenu index="2-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="2-4-1">选项1</el-menu-item>
-              </el-submenu>
             </el-submenu>
             <el-menu-item
               index="3"
@@ -151,6 +139,9 @@ export default {
     },
     allClassify: function () {
       this.$router.push({ path: '/main/classify' })
+    },
+    addClassify: function () {
+      this.$router.push({ path: '/main/classify/add' })
     }
   }
 }

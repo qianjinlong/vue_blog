@@ -65,7 +65,10 @@
         </el-select>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth">
-        <el-button type="primary" @click="articleAdd"><i class="el-icon-edit"></i> 添加</el-button>
+        <el-button
+          type="primary"
+          @click="articleAdd"
+        ><i class="el-icon-edit"></i> 添加</el-button>
       </el-form-item>
     </el-form>
   </div>
